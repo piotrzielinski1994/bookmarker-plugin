@@ -1,3 +1,4 @@
 import { Bookmark } from 'utils/api/api.interfaces';
+import { TreeStructureInterface } from 'components/list/list.interfaces';
 
-export type ListItemProps = Bookmark;
+export interface ListItemProps extends Bookmark, TreeStructureInterface {}

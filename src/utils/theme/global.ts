@@ -10,6 +10,15 @@ const GlobalStyle = createGlobalStyle`
     body {
         margin: 0;
         color: #fff;
+        width: 400px;
+        height: 500px;
+        background-color: #212121;
+        border: 1px solid red;
+    }
+
+    #root {
+        max-height: 100%;
+        overflow-y: scroll;
     }
 `;
 

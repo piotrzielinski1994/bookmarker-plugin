@@ -8,7 +8,7 @@ import {
 } from 'components/list/item/catalog/catalog.styles';
 import { ListItemCatalogProps } from 'components/list/item/catalog/catalog.interfaces';
 
-const ListItemCatalog = ({ title, items }: ListItemCatalogProps) => {
+const ListItemCatalog = ({ title, items, depth }: ListItemCatalogProps) => {
   const [isCollapsed, toggleIsCollapsed] = useState(true);
 
   const handleClick = () => {
@@ -17,11 +17,11 @@ const ListItemCatalog = ({ title, items }: ListItemCatalogProps) => {
 
   return (
     <StyledWrapper>
-      <StyledButton onClick={handleClick}>
+      <StyledButton onClick={handleClick} depth={depth}>
         <StyledFolderIcon />
         <StyledText>{title}</StyledText>
       </StyledButton>
-      {items && !isCollapsed && <List bookmarks={items} />}
+      {items && !isCollapsed && <List bookmarks={items} depth={depth + 1} />}
     </StyledWrapper>
   );
 };

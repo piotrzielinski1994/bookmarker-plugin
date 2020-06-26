@@ -5,9 +5,10 @@ import List from 'components/list/list';
 import { ThemeProvider } from 'styled-components';
 import defaultTheme from 'utils/theme/theme';
 import { Bookmark } from 'utils/api/api.interfaces';
+import { BookmarksContext } from 'utils/context/bookmarks/bookmarks';
 
 function App() {
-  const [bookmarks, setBookmarks] = useState([] as Array<Bookmark>);
+  const [bookmarks, setBookmarks] = useState([] as Bookmark[]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,12 +21,14 @@ function App() {
   }, []);
 
   return (
-    <>
+    <BookmarksContext.Provider
+      value={{ bookmarks: bookmarks, updateBookmarks: setBookmarks }}
+    >
       <GlobalStyle />
       <ThemeProvider theme={defaultTheme}>
-        <List bookmarks={bookmarks} />
+        <List />
       </ThemeProvider>
-    </>
+    </BookmarksContext.Provider>
   );
 }
 

@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { WithDroppableState } from 'utils/hoc/with-droppable/with-droppable.interfaces';
+import { BookmarksContext } from 'utils/context/bookmarks/bookmarks';
+import { Bookmark } from 'utils/api/api.interfaces';
 
 const withDroppable = (Component: any) => {
   return (props: any) => {
+    const { bookmarks, updateBookmarks } = useContext(BookmarksContext);
+
     const [state, setState] = useState<WithDroppableState>({
       isDragOver: false,
     });
@@ -29,13 +33,15 @@ const withDroppable = (Component: any) => {
       event.preventDefault();
       updateState({ isDragOver: false });
 
-      const cardId = event.dataTransfer.getData('itemId');
-      const card = document.getElementById(cardId);
+      const itemId = event.dataTransfer.getData('itemId');
+      const item = document.getElementById(itemId);
 
-      if (card !== null) {
-        card.style.display = 'block';
-        event.target.appendChild(card);
+      if (item !== null) {
+        item.style.display = 'block';
+        event.target.appendChild(item);
       }
+
+      // bookmarksContext.updateBookmarks({} as Bookmark[]);
     };
 
     return (

@@ -9,11 +9,11 @@ const GlobalStyle = createGlobalStyle`
 
     body {
         margin: 0;
-        color: #fff;
+        /* color: #fff; */
         width: 400px;
         height: 500px;
         background-color: #212121;
-        border: 1px solid red;
+        border: 1px solid green;
     }
 
     #root {

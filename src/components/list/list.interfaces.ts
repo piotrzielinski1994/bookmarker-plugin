@@ -1,13 +1,10 @@
+import { WithDroppableInterface } from 'utils/hoc/with-droppable/with-droppable.interfaces';
 import { Bookmark } from 'utils/api/api.interfaces';
 
-export interface TreeStructureInterface {
-  depth: number;
+export interface ListProps extends WithDroppableInterface {
+  bookmarks: Bookmark[];
 }
 
 export interface StyledWrapperProps {
-  isRoot?: boolean;
-}
-
-export interface ListProps extends Partial<TreeStructureInterface> {
-  bookmarks: Array<Bookmark>;
+  isDragOver: boolean;
 }

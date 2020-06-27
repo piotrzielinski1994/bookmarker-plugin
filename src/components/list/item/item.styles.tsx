@@ -15,6 +15,6 @@ export const StyledWrapper = styled.div<StyledWrapperProps>`
       return '#f48fb1';
     }
 
-    return depth % 2 ? 'white' : '#a6d4fa';
+    return depth % 2 ? '#fff' : '#a6d4fa';
   }};
 `;

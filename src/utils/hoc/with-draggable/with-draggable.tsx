@@ -7,18 +7,21 @@ const withDraggable = (Component: any) => {
       isDragging: false,
     });
 
+    let defaultDisplayValue = 'block';
+
     const updateState = ({ ...args }: Partial<WithDraggableState>) => {
       setState({ ...state, ...args });
     };
 
     const handleDragStart = (event: any) => {
+      event.stopPropagation();
+
+      updateState({ isDragging: true });
+
       const target = event.target;
-
-      if (target.id === `item-${props.id}`) {
-        updateState({ isDragging: true });
-      }
-
       event.dataTransfer.setData('itemId', target.id);
+
+      defaultDisplayValue = target.style.display;
 
       setTimeout(() => {
         target.style.display = 'none';
@@ -26,11 +29,11 @@ const withDraggable = (Component: any) => {
     };
 
     const handleDragEnd = (event: any) => {
-      event.preventDefault();
+      event.stopPropagation();
 
-      if (event.target.id === `item-${props.id}`) {
-        updateState({ isDragging: false });
-      }
+      event.target.style.display = defaultDisplayValue;
+
+      updateState({ isDragging: false });
     };
 
     return (

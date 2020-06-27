@@ -10,7 +10,7 @@ const List = withDroppable((props: ListProps) => {
 
   return (
     <StyledWrapper {...props}>
-      {Object.values(bookmarks).map((bookmark) => (
+      {bookmarks.map((bookmark) => (
         <ListItem key={bookmark.id} {...bookmark} />
       ))}
     </StyledWrapper>

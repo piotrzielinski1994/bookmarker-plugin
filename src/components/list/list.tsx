@@ -9,9 +9,9 @@ const List = withDroppable((props: ListProps) => {
   const { bookmarks } = useContext(BookmarksContext);
 
   return (
-    <StyledWrapper {...props}>
+    <StyledWrapper {...props} id="droppable-root">
       {bookmarks.map((bookmark) => (
-        <ListItem key={bookmark.id} {...bookmark} />
+        <ListItem key={bookmark.id} bookmark={bookmark} depth={0} />
       ))}
     </StyledWrapper>
   );

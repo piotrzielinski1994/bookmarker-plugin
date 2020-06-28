@@ -82,7 +82,7 @@ export const isDirectParent = (
     parentId === null ? clone(tree) : getNode(parentId, tree)?.items;
 
   if (items === undefined) {
-    throw 'Node not found or is not a folder';
+    throw Error('Node not found or is not a folder');
   }
 
   return items.some((item) => {

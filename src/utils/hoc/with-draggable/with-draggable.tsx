@@ -39,9 +39,9 @@ const withDraggable = (Component: any) => {
     return (
       <Component
         {...props}
+        isDragging={state.isDragging}
         draggable="true"
         onDragStart={handleDragStart}
-        isDragging={state.isDragging}
         onDragEnd={handleDragEnd}
       />
     );

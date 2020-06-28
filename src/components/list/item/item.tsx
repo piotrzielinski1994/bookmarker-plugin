@@ -4,10 +4,12 @@ import { ListItemProps } from 'components/list/item/item.interfaces';
 import withDroppable from 'utils/hoc/with-droppable/with-droppable';
 import withDraggable from 'utils/hoc/with-draggable/with-draggable';
 import ListItemFolder from 'components/list/item/folder/folder';
+import ListItemLink from 'components/list/item/link/link';
 
 const ListItem = withDroppable(
   withDraggable(({ bookmark, depth, ...props }: ListItemProps) => {
     const isFolder = bookmark.items !== undefined;
+
     return (
       <StyledWrapper
         {...props}
@@ -16,22 +18,9 @@ const ListItem = withDroppable(
         canDrop={isFolder}
       >
         {!isFolder ? (
-          <>{bookmark.title}</>
+          <ListItemLink bookmark={bookmark} depth={depth} />
         ) : (
           <ListItemFolder bookmark={bookmark} depth={depth} />
-
-          // <>
-          //   <button>{bookmark.title}</button>
-          //   {bookmark.items !== undefined &&
-          //     bookmark!.items.map((item) => (
-          //       <ListItem
-          //         key={item.id}
-          //         bookmark={item}
-          //         depth={depth + 1}
-          //         canDrop={item.items !== undefined}
-          //       />
-          //     ))}
-          // </>
         )}
       </StyledWrapper>
     );

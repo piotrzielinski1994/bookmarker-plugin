@@ -11,3 +11,7 @@ export interface StyledWrapperProps {}
 export interface StyledButtonProps {
   isCollapsed: boolean;
 }
+
+export interface StyledFolderProps {
+  isCollapsed: boolean;
+}

@@ -1,6 +1,5 @@
 export interface WithDraggableInterface {
-  onDragStart: (event: any) => void;
-  onDragEnd: (event: any) => void;
+  isDragging: boolean;
 }
 
 export interface WithDraggableState {

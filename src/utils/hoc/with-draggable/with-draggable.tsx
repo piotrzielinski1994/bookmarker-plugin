@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { WithDraggableState } from 'utils/hoc/with-draggable/with-draggable.interfaces';
+import { getClosestDroppableId, getClosestDroppable } from 'utils/helpers/dnd';
+import { itemMinHeight } from 'components/list/item/item.styles';
 
 const withDraggable = (Component: any) => {
   return (props: any) => {
@@ -7,7 +9,7 @@ const withDraggable = (Component: any) => {
       isDragging: false,
     });
 
-    let defaultDisplayValue = 'block';
+    let defaultDisplayValue = 'flex';
 
     const updateState = ({ ...args }: Partial<WithDraggableState>) => {
       setState({ ...state, ...args });
@@ -19,19 +21,35 @@ const withDraggable = (Component: any) => {
       updateState({ isDragging: true });
 
       const target = event.target;
-      event.dataTransfer.setData('itemId', target.id);
 
-      defaultDisplayValue = target.style.display;
+      try {
+        const closestItem = getClosestDroppable(target);
 
-      setTimeout(() => {
-        target.style.display = 'none';
-      }, 0);
+        const closestItemRect = closestItem.getBoundingClientRect();
+        const dragIconRect = target.getBoundingClientRect();
+
+        event.dataTransfer.setData('itemId', getClosestDroppableId(target));
+        event.dataTransfer.setDragImage(
+          closestItem,
+          closestItemRect.width - dragIconRect.width / 2,
+          itemMinHeight / 2,
+        );
+
+        defaultDisplayValue = closestItem.style.display;
+
+        setTimeout(() => {
+          closestItem.style.display = 'none';
+        }, 0);
+      } catch (error) {
+        console.log('Error: ', error.message);
+      }
     };
 
     const handleDragEnd = (event: any) => {
       event.stopPropagation();
 
-      event.target.style.display = defaultDisplayValue;
+      const closestItem = getClosestDroppable(event.target);
+      closestItem.style.display = defaultDisplayValue;
 
       updateState({ isDragging: false });
     };
@@ -40,7 +58,6 @@ const withDraggable = (Component: any) => {
       <Component
         {...props}
         isDragging={state.isDragging}
-        draggable="true"
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       />

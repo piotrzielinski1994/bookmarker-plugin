@@ -1,6 +1,10 @@
 import { Bookmark } from 'utils/api/api.interfaces';
 import { clone } from 'ramda';
 
+export const isFolder = (node: Bookmark) => {
+  return node.items !== undefined;
+};
+
 export const getNode = (id: number, tree: Bookmark[]): Bookmark | null => {
   const tempTree = clone(tree);
 
@@ -15,6 +19,11 @@ export const getNode = (id: number, tree: Bookmark[]): Bookmark | null => {
 
     return null;
   }, null);
+
+  // if (foundNode === null) {
+  //   console.log('TEST: ', id, tempTree);
+  //   throw Error('Node not found');
+  // }
 
   return foundNode;
 };
@@ -71,6 +80,23 @@ export const removeNode = (
   }, [] as Bookmark[]);
 
   return tempTree;
+};
+
+export const moveNode = (
+  nodeId: number,
+  parentId: number | null,
+  tree: Bookmark[],
+) => {
+  const node = getNode(nodeId, tree);
+
+  if (node === null) {
+    throw Error('Node not found');
+  }
+
+  let updatedTree = removeNode(nodeId, tree);
+  updatedTree = addNode(parentId, node, updatedTree);
+
+  return updatedTree;
 };
 
 export const isDirectParent = (

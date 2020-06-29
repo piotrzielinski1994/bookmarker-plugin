@@ -12,7 +12,6 @@ const ListItemFolder = ({ bookmark, depth }: ListItemFolderProps) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleIsCollapsed = () => {
-    console.log('TEST toggleIsCollapsed: ', bookmark.title);
     setIsCollapsed(!isCollapsed);
   };
 
@@ -28,28 +27,6 @@ const ListItemFolder = ({ bookmark, depth }: ListItemFolderProps) => {
       </StyledFolder>
     </StyledWrapper>
   );
-
-  if (1) {
-    return (
-      <StyledButton onClick={toggleIsCollapsed} isCollapsed={isCollapsed}>
-        {bookmark.title}
-        {!isCollapsed &&
-          (bookmark!.items as Bookmark[]).map((item) => (
-            <ListItem key={item.id} bookmark={item} depth={depth + 1} />
-          ))}
-      </StyledButton>
-    );
-  } else {
-    return (
-      <StyledWrapper onClick={toggleIsCollapsed}>
-        {bookmark.title}
-        {!isCollapsed &&
-          (bookmark!.items as Bookmark[]).map((item) => (
-            <ListItem key={item.id} bookmark={item} depth={depth + 1} />
-          ))}
-      </StyledWrapper>
-    );
-  }
 };
 
 export default ListItemFolder;

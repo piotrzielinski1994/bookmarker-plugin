@@ -1,23 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { WithDroppableState } from 'utils/hoc/with-droppable/with-droppable.interfaces';
 import { BookmarksContext } from 'utils/context/bookmarks/bookmarks';
-import { addNode, getNode, removeNode } from 'utils/helpers';
-
-const getClosestDroppableId = (eventTarget: Element) => {
-  const closest = eventTarget.closest('*[id^=droppable-]');
-
-  if (closest === null || (closest && closest.id === '')) {
-    return null;
-  }
-
-  return closest.id;
-};
-
-const pullNumberFromText = (text: string) => {
-  const matches = text.match(/\d+/);
-
-  return matches && Number.parseInt(matches[0]);
-};
+import { getNode, isFolder, moveNode } from 'utils/helpers/tree';
+import {
+  getNodeId,
+  pullNumberFromText,
+  getClosestDroppable,
+} from 'utils/helpers/dnd';
 
 const withDroppable = (Component: any) => {
   return (props: any) => {
@@ -26,16 +15,6 @@ const withDroppable = (Component: any) => {
     const [state, setState] = useState<WithDroppableState>({
       isDragOver: false,
     });
-
-    const getNodeId = (eventTarget: Element) => {
-      const closestDroppableNodeId = getClosestDroppableId(eventTarget);
-
-      if (!closestDroppableNodeId) {
-        return null;
-      }
-
-      return pullNumberFromText(closestDroppableNodeId);
-    };
 
     const updateState = ({ ...args }: Partial<WithDroppableState>) => {
       setState({ ...state, ...args });
@@ -67,39 +46,32 @@ const withDroppable = (Component: any) => {
 
       updateState({ isDragOver: false });
 
-      const itemId = event.dataTransfer!.getData('itemId');
-      const item = document.getElementById(itemId);
-
-      if (item === null) {
-        return;
-      }
-
       try {
-        const parentId = getNodeId(event.target);
-        const nodeId = pullNumberFromText(itemId);
+        const nodeId = pullNumberFromText(event.dataTransfer.getData('itemId'));
 
         if (nodeId === null) {
           return;
         }
 
-        const canDrop = parentId === null || props.bookmark.items !== undefined;
+        const parentId = getNodeId(getClosestDroppable(event.target));
+
+        if (nodeId === parentId) {
+          return;
+        }
+
+        const parentNode = parentId && getNode(parentId, bookmarks);
+        const canDrop =
+          parentId === null || (parentNode && isFolder(parentNode));
 
         if (!canDrop) {
           return;
         }
 
-        const node = getNode(nodeId, bookmarks);
-
-        if (node === null) {
-          return;
-        }
-
-        let updatedTree = removeNode(nodeId, bookmarks);
-        updatedTree = addNode(parentId, node, updatedTree);
+        const updatedTree = moveNode(nodeId, parentId, bookmarks);
 
         updateBookmarks(updatedTree);
       } catch (error) {
-        console.log('Error: ', error, itemId, event.target.id);
+        console.log('Error: ', error.message);
       }
     };
 

@@ -10,11 +10,18 @@ export const StyledLink = styled(({ children, ...props }: StyledLinkProps) => (
   </a>
 ))`
   text-decoration: unset;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr 30px;
 
   &:hover {
     background-color: #eeeeee;
   }
+`;
+
+export const StyledLinkContent = styled.div`
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;

@@ -1,9 +1,10 @@
 import { Bookmark } from 'utils/api/api.interfaces';
-import { WithDroppableInterface } from 'utils/hoc/with-droppable/with-droppable.interfaces';
+import { DragButtonProps } from 'components/list/item/drag-button/drag-button.interfaces';
 
 export interface ListItemFolderProps {
   bookmark: Bookmark;
   depth: number;
+  dragProps: DragButtonProps;
 }
 
 export interface StyledWrapperProps {}

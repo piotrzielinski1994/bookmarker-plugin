@@ -24,9 +24,9 @@ export const StyledButton = styled.button<StyledButtonProps>`
   height: ${({ isCollapsed }) => (isCollapsed ? '100%' : '30px')};
   background-color: inherit;
   border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 30px;
   justify-content: center;
   cursor: pointer;
   border-radius: 5px;
@@ -36,6 +36,14 @@ export const StyledButton = styled.button<StyledButtonProps>`
   &:hover {
     background-color: #eeeeee;
   }
+`;
+
+export const StyledButtonContent = styled.div`
+  height: 100%;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 export const StyledFolder = styled.div<StyledFolderProps>`
